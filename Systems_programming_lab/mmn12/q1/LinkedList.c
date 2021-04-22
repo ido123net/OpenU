@@ -42,7 +42,7 @@ int print_list(ptr head)
     ptr current = head;
     while (current != NULL)
     {
-        printf(current->line);
+        printf("%s\n", current->line);
         current = current->next;
     }
     return 0;

@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "myText.h"
 
 static int arr_size = size;
@@ -7,7 +8,7 @@ static int arr_size = size;
 array *initArray()
 {
     array *arr = (array *)malloc(sizeof(array));
-    arr->text = malloc(size);
+    arr->text = calloc(size, sizeof(char));
     arr->len = 0;
     return arr;
 }
@@ -25,17 +26,20 @@ int add_c_arr(array *arr, char c)
         arr->text = new_text;
     }
     arr->text[(arr->len)++] = c;
+    return 0;
 }
 
 int print_arr(array *arr)
 {
-    for (int i = 0; i < arr_size; i++)
+    int i = 0;
+    while (i < strlen(arr->text))
     {
         if (i % size == 0 && i != 0)
         {
             putchar('\n');
         }
-        putchar(arr->text[i]);
+        putchar((arr->text)[i]);
+        i++;
     }
     return 0;
 }

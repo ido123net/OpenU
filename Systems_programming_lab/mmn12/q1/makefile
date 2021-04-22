@@ -1,8 +1,11 @@
-myText: main.o LinkedList.o Buffer.o
-	gcc -ansi -Wall -g main.o LinkedList.o -o myText
+myText: main.o LinkedList.o Buffer.o myText.o myText.h
+	gcc -ansi -Wall -g main.o LinkedList.o Buffer.o myText.o -o myText
+myText.o: myText.c myText.h
+	gcc -c -ansi -g -Wall myText.c -o myText.o
 main.o: main.c myText.h
 	gcc -c -ansi -g -Wall main.c -o main.o
 LinkedList.o: LinkedList.c myText.h
 	gcc -c -ansi -g -Wall LinkedList.c -o LinkedList.o
 Buffer.o: Buffer.c myText.h
 	gcc -c -ansi -g -Wall Buffer.c -o Buffer.o
+	
