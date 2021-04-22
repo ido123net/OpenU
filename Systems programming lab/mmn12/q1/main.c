@@ -1,19 +1,25 @@
-#include <stdio.h>
 #include "myText.h"
 
-int main(int argc, char const *argv[])
+int main()
 {
-    ptr head = createNode();
-    int c;
-    while ((c = getchar()) != EOF)
+    void *p;
+    data_struct type = 0;
+    switch (type)
     {
-        if (c == '\n')
-        {
-            continue;
-        }
-        add_c(head, c);
+    case buffer:
+        p = (array*)initArray();
+        break;
+
+    case linkedList:
+        p = (ptr)createNode();
+        break;
+    
+    default:
+        break;
     }
-    printf(head->line);
+    readText(type, p);
+    printText(type, p);
+    
 
     return 0;
 }

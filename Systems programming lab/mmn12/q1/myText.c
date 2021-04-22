@@ -1,23 +1,46 @@
 #include <stdio.h>
 #include "myText.h"
 
-typedef enum {buffer, linkedList} data_struct;
-
-int readText(data_struct s, void *data)
+int readText(data_struct type, void *p)
 {
     int c;
-    char line[size];
     while ((c = getchar()) != EOF)
     {
-        switch (s)
+        if (c == '\n')
         {
-        case /* constant-expression */:
-            /* code */
+            continue;
+        }
+        switch (type)
+        {
+        case buffer:
+            add_c_arr((array *)p, c);
             break;
-        
+
+        case linkedList:
+            add_c_list((ptr)p, c);
+            break;
+
         default:
             break;
         }
     }
-    
+    return 0;
+}
+
+int printText(data_struct type, void *p)
+{
+    switch (type)
+    {
+    case buffer:
+        print_arr((array *)p);
+        break;
+
+    case linkedList:
+        print_list((ptr)p);
+        break;
+
+    default:
+        break;
+    }
+    return 0;
 }
