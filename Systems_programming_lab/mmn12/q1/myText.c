@@ -41,6 +41,5 @@ int printText(data_struct type, void *p)
     default:
         break;
     }
-    printf("\n");
     return 0;
 }
