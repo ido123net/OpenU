@@ -2,14 +2,18 @@
 #include <stdio.h>
 #include <string.h>
 #define size 60
-typedef enum {buffer, linkedList} data_struct;
+typedef enum
+{
+    buffer,
+    linkedList
+} data_struct;
 
 typedef struct node *ptr;
 
 typedef struct node
 {
     int len;
-    char line[size];
+    char line[size + 1];
     ptr next;
 } node;
 

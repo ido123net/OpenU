@@ -18,20 +18,18 @@ int add_c_list(ptr head, char c)
     {
         tmp = tmp->next;
     }
-    if (tmp->len < size)
+    if (tmp->len >= size)
     {
-        tmp->line[(tmp->len)++] = c;
-    }
-    else
-    {
+        tmp->line[tmp->len] = '\0';
         ptr new_node = createNode();
         if (!new_node)
         {
             return -1;
         }
         tmp->next = new_node;
-        new_node->line[(new_node->len)++] = c;
+        tmp = new_node;
     }
+    tmp->line[(tmp->len)++] = c;
     return 0;
 }
 
