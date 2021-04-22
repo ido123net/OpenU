@@ -1,4 +1,3 @@
-#include <string.h>
 #include "myText.h"
 
 static int arr_size = size;

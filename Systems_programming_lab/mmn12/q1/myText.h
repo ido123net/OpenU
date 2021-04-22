@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #define size 60
 typedef enum {buffer, linkedList} data_struct;
 
