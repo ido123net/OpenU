@@ -41,8 +41,7 @@ int print_node(ptr p)
     }
     char line[size];
     strcpy(line, p->line);
-    puts(line);
-    putchar('\n');
+    printf("%s\n", line);
     return 0;
 }
 

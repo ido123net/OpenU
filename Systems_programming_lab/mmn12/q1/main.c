@@ -9,6 +9,7 @@ int main()
     printf("Linked list (%d)\n", linkedList);
     printf("Select an option (%d \\ %d): ", buffer, linkedList);
     scanf("%d", &type);
+    printf("\nYour text in %d char per line:\n", size);
     switch (type)
     {
     case buffer:

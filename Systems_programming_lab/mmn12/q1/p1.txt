@@ -1,6 +1,0 @@
-select how you want to save your data:
-Buffer (0)
-Linked list (1)
-Select an option (0 \ 1): 
-000000000000000000000000000000000000000000000000000000000000
-000

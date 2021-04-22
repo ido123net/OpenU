@@ -31,13 +31,14 @@ int print_arr(array *arr)
     int i = 0;
     while (i < strlen(arr->text))
     {
-        if (i % size == 0)
+        if (i % size == 0 && i != 0)
         {
             putchar('\n');
         }
         putchar((arr->text)[i]);
         i++;
     }
+    putchar('\n');
     return 0;
 }
 
