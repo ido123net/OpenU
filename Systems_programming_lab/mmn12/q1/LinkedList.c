@@ -41,8 +41,9 @@ int print_node(ptr p)
     {
         return 1;
     }
+    char line = p->line;
+    puts(line);
     putchar('\n');
-    puts((p->line));
     return 0;
 }
 
