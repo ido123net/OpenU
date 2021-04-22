@@ -3,7 +3,7 @@
 
 int main(int argc, char const *argv[])
 {
-    ptr head;
+    ptr head = createNode();
     int c;
     while ((c = getchar()) != EOF)
     {
@@ -13,6 +13,7 @@ int main(int argc, char const *argv[])
         }
         add_c(head, c);
     }
+    printf(head->line);
 
     return 0;
 }

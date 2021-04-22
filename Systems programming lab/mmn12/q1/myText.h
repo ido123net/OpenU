@@ -10,3 +10,4 @@ typedef struct node
 } node;
 
 int add_c(ptr head, char c);
+ptr createNode();

@@ -1,15 +1,6 @@
 #include <stdlib.h>
 #include "myText.h"
 
-typedef struct node *ptr;
-
-typedef struct node
-{
-    int len;
-    char line[size];
-    ptr next;
-} node;
-
 ptr createNode()
 {
     ptr new_node = (ptr)malloc(sizeof(node)); /* allocate memory using malloc() */
@@ -23,14 +14,6 @@ ptr createNode()
 
 int add_c(ptr head, char c)
 {
-    // ptr new_node;            /* declare two nodes temp and p */
-    // new_node = createNode(); /* createNode will return a new node with data = value and next pointing to NULL. */
-    // if (!new_node)
-    // {
-    //     printf("Out of Memory Space\n");
-    //     return -1;
-    // }
-    // srtcpy(new_node->line, value); /* add element's value to data part of node */
     ptr tmp = head;
     while (tmp->len >= size && tmp->next != NULL)
     {
