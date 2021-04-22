@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "myText.h"
 
 int readText(data_struct type, void *p)

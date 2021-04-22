@@ -1,5 +1,3 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include "myText.h"
 
 ptr createNode()
@@ -37,13 +35,22 @@ int add_c_list(ptr head, char c)
     return 0;
 }
 
+int print_node(ptr p)
+{
+    if (!p)
+    {
+        return 1;
+    }
+    printf("\n%s", (p->line));
+    return 0;
+}
+
 int print_list(ptr head)
 {
-    ptr current = head;
-    while (current != NULL)
+    ptr p = head;
+    while (print_node(p) == 0)
     {
-        printf("%s\n", current->line);
-        current = current->next;
+        p = p->next;
     }
     return 0;
 }
