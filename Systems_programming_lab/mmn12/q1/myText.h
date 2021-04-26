@@ -31,3 +31,5 @@ int add_c_list(ptr head, char c);
 int add_c_arr(array *arr, char c);
 int print_list(ptr head);
 int print_arr(array *arr);
+int free_arr(array *arr);
+int free_list(ptr head);

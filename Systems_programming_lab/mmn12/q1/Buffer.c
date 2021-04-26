@@ -29,7 +29,7 @@ int add_c_arr(array *arr, char c)
 int print_arr(array *arr)
 {
     int i = 0;
-    while (i < strlen(arr->text))
+    while (i < arr->len)
     {
         if (i % size == 0 && i != 0)
         {
