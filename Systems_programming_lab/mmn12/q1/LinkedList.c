@@ -6,30 +6,45 @@ ptr createNode()
     if (new_node)
     {
         new_node->next = NULL; /* make next point to NULL */
+        new_node->prev = NULL; /* make next point to NULL */
         new_node->len = 0;     /* init the length to 0 */
     }
     return new_node; /* return the new ptr */
 }
 
-int add_c_list(ptr head, char c)
+LinkedList *initList()
 {
-    ptr tmp = head;
-    while (tmp->len >= size && tmp->next != NULL)
+    ptr p = createNode();
+    LinkedList *list = (LinkedList *)malloc(sizeof(LinkedList));
+    list->head = p;
+    list->tail = p;
+    return list;
+}
+
+int addNodeLast(LinkedList *list)
+{
+    ptr p = createNode();
+    if (!p)
     {
-        tmp = tmp->next;
+        return -1;
     }
-    if (tmp->len >= size)
+    list->tail->next = p;
+    p->prev = list->tail;
+    list->tail = p;
+    return 0;
+}
+
+int add_c_list(LinkedList *list, char c)
+{
+    if (list->tail->len >= size)
     {
-        tmp->line[tmp->len] = '\0';
-        ptr new_node = createNode();
-        if (!new_node)
+        list->tail->line[size] = '\0';
+        if(addNodeLast(list) != 0)
         {
             return -1;
         }
-        tmp->next = new_node;
-        tmp = new_node;
     }
-    tmp->line[(tmp->len)++] = c;
+    list->tail->line[(list->tail->len)++] = c;
     return 0;
 }
 
@@ -43,9 +58,9 @@ int print_node(ptr p)
     return 0;
 }
 
-int print_list(ptr head)
+int print_list(LinkedList *list)
 {
-    ptr p = head;
+    ptr p = list->head;
     while (print_node(p) == 0)
     {
         p = p->next;
@@ -53,13 +68,14 @@ int print_list(ptr head)
     return 0;
 }
 
-int free_list(ptr head)
+int free_list(LinkedList *list)
 {
+    list->tail = NULL;
     ptr tmp;
-    if (head != NULL)
+    while (list->head != NULL)
     {
-        tmp = head;
-        head = head->next;
+        tmp = list->head;
+        list->head = list->head->next;
         free(tmp);
     }
     return 0;

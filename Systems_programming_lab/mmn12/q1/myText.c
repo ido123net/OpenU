@@ -11,16 +11,16 @@ int readText(int type, void *p)
         }
         switch (type)
         {
-        case buffer:
-            if (add_c_arr((array *)p, c) != 0)
+        case BUFFER:
+            if (add_c_buf((Buffer *)p, c) != 0)
             {
                 printf("\nout of memory\n");
                 return -1;
             }
             break;
 
-        case linkedList:
-            if (add_c_list((ptr)p, c) != 0)
+        case LINKEDLIST:
+            if (add_c_list((LinkedList *)p, c) != 0)
             {
                 printf("\nout of memory\n");
                 return -1;
@@ -38,12 +38,12 @@ int printText(int type, void *p)
 {
     switch (type)
     {
-    case buffer:
-        print_arr((array *)p);
+    case BUFFER:
+        print_arr((Buffer *)p);
         break;
 
-    case linkedList:
-        print_list((ptr)p);
+    case LINKEDLIST:
+        print_list((LinkedList *)p);
         break;
 
     default:

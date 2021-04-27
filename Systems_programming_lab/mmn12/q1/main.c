@@ -22,13 +22,13 @@ int welcome()
 {
     int type;
     printf("select how you want to save your data:\n");
-    printf("Buffer (%d)\n", buffer);
-    printf("Linked list (%d)\n", linkedList);
-    printf("Select an option (%d \\ %d): ", buffer, linkedList);
+    printf("Buffer (%d)\n", BUFFER);
+    printf("Linked list (%d)\n", LINKEDLIST);
+    printf("Select an option (%d \\ %d): ", BUFFER, LINKEDLIST);
     scanf("%d", &type);
-    if (type != linkedList && type != buffer)
+    if (type != LINKEDLIST && type != BUFFER)
     {
-        printf("You must choose one of the two options %d or %d\n", buffer, linkedList);
+        printf("You must choose one of the two options %d or %d\n", BUFFER, LINKEDLIST);
         return welcome();
     }
     printf("Enter your text:\n");
@@ -39,14 +39,14 @@ void init_data_struct(int type, void **p)
 {
     switch (type)
     {
-    case buffer:
+    case BUFFER:
         printf("\tInitializing \"buffer\" data structure\n");
-        *p = (array *)initArray();
+        *p = (Buffer *)initBuffer();
         break;
 
-    case linkedList:
+    case LINKEDLIST:
         printf("\tInitializing \"linkedList\" data structure\n");
-        *p = (ptr)createNode();
+        *p = (LinkedList *)initList();
         break;
 
     default:
@@ -58,11 +58,11 @@ void free_data(int type, void *p)
 {
     switch (type)
     {
-    case buffer:
+    case BUFFER:
         free_arr(p);
         break;
 
-    case linkedList:
+    case LINKEDLIST:
         free_list(p);
         break;
 
