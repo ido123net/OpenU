@@ -1,5 +1,5 @@
 
-#include "myText.h"
+#include "data.h"
 
 int welcome();
 void init_data_struct(int type, void **p);
@@ -11,7 +11,7 @@ int main()
     int type = welcome();
     init_data_struct(type, &p);
     readText(type, p);
-    printf("\nYour text in %d char per line:\n", size);
+    printf("Your text in %d char per line:\n", size);
     printText(type, p);
     free_data(type, p);
 
@@ -40,10 +40,12 @@ void init_data_struct(int type, void **p)
     switch (type)
     {
     case buffer:
+        printf("\tInitializing \"buffer\" data structure\n");
         *p = (array *)initArray();
         break;
 
     case linkedList:
+        printf("\tInitializing \"linkedList\" data structure\n");
         *p = (ptr)createNode();
         break;
 

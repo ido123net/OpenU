@@ -1,4 +1,4 @@
-#include "myText.h"
+#include "data.h"
 
 ptr createNode()
 {
@@ -39,9 +39,7 @@ int print_node(ptr p)
     {
         return 1;
     }
-    char line[size];
-    strcpy(line, p->line);
-    printf("%s\n", line);
+    printf("%s\n", p->line);
     return 0;
 }
 

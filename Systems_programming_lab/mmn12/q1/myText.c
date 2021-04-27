@@ -1,6 +1,6 @@
-#include "myText.h"
+#include "data.h"
 
-int readText(data_struct type, void *p)
+int readText(int type, void *p)
 {
     int c;
     while ((c = getchar()) != EOF)
@@ -12,11 +12,19 @@ int readText(data_struct type, void *p)
         switch (type)
         {
         case buffer:
-            add_c_arr((array *)p, c);
+            if (add_c_arr((array *)p, c) != 0)
+            {
+                printf("\nout of memory\n");
+                return -1;
+            }
             break;
 
         case linkedList:
-            add_c_list((ptr)p, c);
+            if (add_c_list((ptr)p, c) != 0)
+            {
+                printf("\nout of memory\n");
+                return -1;
+            }
             break;
 
         default:
@@ -26,7 +34,7 @@ int readText(data_struct type, void *p)
     return 0;
 }
 
-int printText(data_struct type, void *p)
+int printText(int type, void *p)
 {
     switch (type)
     {

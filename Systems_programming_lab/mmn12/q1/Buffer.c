@@ -1,4 +1,4 @@
-#include "myText.h"
+#include "data.h"
 
 static int arr_size = size;
 
