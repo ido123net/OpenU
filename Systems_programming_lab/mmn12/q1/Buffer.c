@@ -1,50 +1,50 @@
 #include "data.h"
 
-static int arr_size = size;
+static int arr_size = size; /* total size saved in memory for the Buffer */
 
-Buffer *initBuffer()
+Buffer *initBuffer() /* initialize Buffer */
 {
-    Buffer *arr = (Buffer *)malloc(sizeof(Buffer));
-    arr->text = calloc(size, sizeof(char));
-    arr->len = 0;
-    return arr;
+    Buffer *buf = (Buffer *)malloc(sizeof(Buffer)); /* pointer to memory for the Buffer */
+    buf->text = calloc(size, sizeof(char));         /* pointer to memory for the text */
+    buf->len = 0;                                   /* length of text start at 0 */
+    return buf;                                     /* the pointer for the Buffer */
 }
 
-int add_c_buf(Buffer *arr, char c)
+int add_c_buf(Buffer *buf, char c) /* adds char to buffer */
 {
-    if (arr->len >= arr_size)
+    if (buf->len >= arr_size) /* if there is no place for more characters */
     {
-        arr_size = arr_size + size;
-        char *new_text = realloc(arr->text, arr_size);
-        if (!new_text)
+        arr_size = arr_size + size;                    /* increase Buffer size */
+        char *new_text = realloc(buf->text, arr_size); /* tries to realloc more memory */
+        if (!new_text)                                 /* fails to realloc more memory */
         {
             return -1;
         }
-        arr->text = new_text;
+        buf->text = new_text; /* update pointer of text in Buffer */
     }
-    arr->text[(arr->len)++] = c;
+    buf->text[(buf->len)++] = c; /* adds the new char */
     return 0;
 }
 
-int print_arr(Buffer *arr)
+int print_arr(Buffer *buf) /* print the text in specific size per line */
 {
     int i = 0;
-    while (i < arr->len)
+    while (i < buf->len)
     {
-        if (i % size == 0 && i != 0)
+        if (i % size == 0 && i != 0) /* new line evry {size} characters */
         {
             putchar('\n');
         }
-        putchar((arr->text)[i]);
+        putchar((buf->text)[i]); /* print the char */
         i++;
     }
-    putchar('\n');
+    putchar('\n'); /* add new line at the end of the printed text */
     return 0;
 }
 
-int free_arr(Buffer *arr)
+int free_arr(Buffer *buf) /* free the memory */
 {
-    free(arr->text);
-    free(arr);
+    free(buf->text); /* free the memory saved for text */
+    free(buf);       /* free the memory saved for data structure */
     return 0;
 }

@@ -2,15 +2,15 @@
 #include <stdio.h>
 #define size 60
 
-typedef enum
+typedef enum /* types of Data Structure */
 {
     BUFFER,
     LINKEDLIST
 } data_struct;
 
-typedef struct node *ptr;
+typedef struct node *ptr; /* pointer to node */
 
-typedef struct node
+typedef struct node /* node in doubly Linked List */
 {
     int len;
     char line[size + 1];
@@ -18,17 +18,16 @@ typedef struct node
     ptr prev;
 } node;
 
-typedef struct LinkedList
+typedef struct LinkedList /* "Linked List" Data Structure */
 {
-    ptr head;
-    ptr tail;
-}LinkedList;
+    ptr head; /* pointer to head of list */
+    ptr tail; /* pointer to end of list */
+} LinkedList;
 
-
-typedef struct
+typedef struct /* "Buffer" Data Structure */
 {
-    char *text;
-    int len;
+    char *text; /* pointer to the text */
+    int len;    /* length of text */
 } Buffer;
 
 LinkedList *initList();
