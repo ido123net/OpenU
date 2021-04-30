@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#define size 60 /* one more for EOF */
+#define size 60
 
 typedef enum /* types of Data Structure */
 {
