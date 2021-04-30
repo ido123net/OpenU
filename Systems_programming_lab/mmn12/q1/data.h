@@ -4,8 +4,8 @@
 
 typedef enum /* types of Data Structure */
 {
-    BUFFER,
-    LINKEDLIST
+    BUFFER = 1,
+    LINKEDLIST = 2
 } data_struct;
 
 typedef struct node *ptr; /* pointer to node */

@@ -31,7 +31,7 @@ int print_arr(Buffer *buf) /* print the text in specific size per line */
     int i = 0;
     while (i < buf->len)
     {
-        if (i % size == 0 && i != 0) /* new line evry {size} characters */
+        if (i % size == 0 && i != 0) /* new line every {size} characters */
         {
             putchar('\n');
         }

@@ -1,9 +1,10 @@
-/*
-* name: Ido Frenkel
-* Id: 205419559
-* The Program gets input from standard input,
-* storing it in selected Data Structure,
-* then prints the text stored in memory to standard output.
+/**
+ * AUTHOR: Ido Frenkel
+ * ID: 205419559
+ * The Program gets input from standard input,
+ * storing it in selected Data Structure,
+ * then prints the text stored in memory to standard output.
+ * * implement the Linked List as doubly for, better time complexity
 */
 
 #include "data.h"
@@ -18,7 +19,10 @@ int main()
     int type = welcome();
 
     init_data_struct(type, &p); /* pointer for the Data Structure */
-    readText(type, p);          /* reads the text provided */
+
+    printf("Enter your text:\n");
+
+    readText(type, p); /* reads the text provided */
 
     printf("Your text in %d char per line:\n", size);
 
@@ -32,17 +36,23 @@ int main()
 int welcome() /* welcome instructions */
 {
     int type; /* type of Data Structure */
+    int tmp;
     printf("select how you want to save your data:\n");
-    printf("Buffer (%d)\n", BUFFER);
-    printf("Linked list (%d)\n", LINKEDLIST);
+    printf("For Buffer => (%d)", BUFFER);
+    printf("\tFor Linked list => (%d)\n", LINKEDLIST);
     printf("Select an option (%d \\ %d): ", BUFFER, LINKEDLIST);
-    scanf("%d", &type);
-    if (type != LINKEDLIST && type != BUFFER) /* If the selected type is not supported */
+    if (scanf("%d", &type) != 1 || (type != BUFFER && type != LINKEDLIST))
     {
-        printf("\nYou must choose one of the two options %d or %d\n", BUFFER, LINKEDLIST);
+        while ((tmp = getchar()) != EOF && tmp != '\n') /* clear the buffer for input */
+            ;
+        if (tmp == EOF)
+        {
+            printf("\nFATAL: you can't enter the \"EOF\" as input!");
+            exit(EXIT_FAILURE);
+        }
+        printf("\nERROR: You must choose one of the two options (%d or %d)\n\n", BUFFER, LINKEDLIST);
         return welcome();
     }
-    printf("Enter your text:\n");
     return type;
 }
 
@@ -51,12 +61,12 @@ void init_data_struct(int type, void **p) /* initialize the pointer for the Data
     switch (type)
     {
     case BUFFER:
-        printf("\tInitializing \"buffer\" data structure\n");
+        printf("INFO: Initializing \"buffer\" data structure\n");
         *p = (Buffer *)initBuffer();
         break;
 
     case LINKEDLIST:
-        printf("\tInitializing \"linkedList\" data structure\n");
+        printf("INFO: Initializing \"linkedList\" data structure\n");
         *p = (LinkedList *)initList();
         break;
 
