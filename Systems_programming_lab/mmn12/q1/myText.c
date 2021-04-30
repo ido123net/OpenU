@@ -5,7 +5,7 @@ int readText(int type, void *p) /* reading the text and put it in the memory */
     int c;
     while ((c = getchar()) != EOF) /* read until EOF */
     {
-        if (c == '\n') /* skipping "new line" char */
+        if (c == '\n' || c == '\r') /* skipping "new line" char */
         {
             continue;
         }
@@ -14,7 +14,7 @@ int readText(int type, void *p) /* reading the text and put it in the memory */
         case BUFFER:
             if (add_c_buf((Buffer *)p, c) != 0) /* puts char in Buffer memory */
             {
-                printf("\nout of memory\n"); /* cant realloc more memory */
+                printf("ERROR: out of memory\n"); /* cant realloc more memory */
                 return -1;
             }
             break;
@@ -22,7 +22,7 @@ int readText(int type, void *p) /* reading the text and put it in the memory */
         case LINKEDLIST:
             if (add_c_list((LinkedList *)p, c) != 0) /* puts char in LinkedList memory */
             {
-                printf("\nout of memory\n"); /* cant realloc more memory */
+                printf("ERROR: out of memory\n"); /* cant realloc more memory */
                 return -1;
             }
             break;

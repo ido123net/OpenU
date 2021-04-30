@@ -38,7 +38,7 @@ int add_c_list(LinkedList *list, char c) /* adds char to Linked List */
 {
     if (list->tail->len >= size) /* Last node is full */
     {
-        list->tail->line[size] = '\0'; /* adds the end of string char to the end of line */
+        list->tail->line[list->tail->len] = '\0'; /* adds the end of string char to the end of line */
         if (addNodeLast(list) != 0)    /* failed to create new node */
         {
             return -1;

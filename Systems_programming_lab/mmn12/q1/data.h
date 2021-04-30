@@ -1,11 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
-#define size 60
+#define size 60 /* one more for EOF */
 
 typedef enum /* types of Data Structure */
 {
-    BUFFER,
-    LINKEDLIST
+    BUFFER = 1,
+    LINKEDLIST = 2
 } data_struct;
 
 typedef struct node *ptr; /* pointer to node */
