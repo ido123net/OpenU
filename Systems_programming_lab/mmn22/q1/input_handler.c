@@ -1,13 +1,15 @@
 #include "input_handler.h"
+#include <stdio.h>
+#include <string.h>
 
 int handle_input()
 {
     char *line = NULL;
     size_t len = 0;
     ssize_t nread;
-    if ((nread = getline(&line, &len, stdin)) == -1)
+    if ((nread = getline(&line, &len, stdin)) != -1)
     {
-        char delims[] = " ";
+        char delims[] = " \n";
 
         char *p = strtok_single(line, delims);
 
