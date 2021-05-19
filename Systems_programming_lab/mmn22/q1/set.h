@@ -4,10 +4,13 @@
 
 enum
 {
-    UNION,
-    INTERSECT,
-    SUB,
-    SYMDIFF
+    READ_SET,
+    PRINT_SET,
+    UNION_SET,
+    INTERSECT_SET,
+    SUB_SET,
+    SYMDIFF_SET,
+    STOP
 };
 
 typedef struct arr *Set;
@@ -19,8 +22,8 @@ typedef struct arr
 
 void add_to_set(Set *set, unsigned short int num);
 
-void print_set(Set set);
+void print_set(Set *set);
 
-Set apply_set_func(Set setA, Set setB, int type);
+void apply_set_func(Set *setA, Set *setB, Set *setC, int type);
 
 Set init_set();

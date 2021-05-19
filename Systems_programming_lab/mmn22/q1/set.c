@@ -9,9 +9,8 @@ void add_to_set(Set *set, unsigned short int num)
     (*set)->arr[group] |= (1 << bit_index);
 }
 
-Set apply_set_func(Set setA, Set setB, int type)
+void apply_set_func(Set *setA, Set *setB, Set *setC, int type)
 {
-    Set new_set = init_set();
     int i;
     for (i = 0; i < SET_SIZE / SIZE; i++)
     {
@@ -20,28 +19,27 @@ Set apply_set_func(Set setA, Set setB, int type)
         {
             switch (type)
             {
-            case UNION:
-                new_set->arr[i] = setA->arr[i] | setB->arr[i];
-                break;
-            
-            case INTERSECT:
-                new_set->arr[i] = setA->arr[i] & setB->arr[i];
+            case UNION_SET:
+                (*setC)->arr[i] = (*setA)->arr[i] | (*setB)->arr[i];
                 break;
 
-            case SUB:
-                new_set->arr[i] = setA->arr[i] & ~(setB->arr[i]);
+            case INTERSECT_SET:
+                (*setC)->arr[i] = (*setA)->arr[i] & (*setB)->arr[i];
                 break;
 
-            case SYMDIFF:
-                new_set->arr[i] = setA->arr[i] ^ setB->arr[i];
+            case SUB_SET:
+                (*setC)->arr[i] = (*setA)->arr[i] & ~((*setB)->arr[i]);
                 break;
-            
+
+            case SYMDIFF_SET:
+                (*setC)->arr[i] = (*setA)->arr[i] ^ (*setB)->arr[i];
+                break;
+
             default:
                 break;
             }
         }
     }
-    return new_set;
 }
 
 void print_group(int group, unsigned short int content)
@@ -61,12 +59,12 @@ void print_group(int group, unsigned short int content)
     }
 }
 
-void print_set(Set set)
+void print_set(Set *set)
 {
     int group;
     for (group = 0; group < SET_SIZE / SIZE; group++)
     {
-        print_group(group, set->arr[group]);
+        print_group(group, (*set)->arr[group]);
     }
 }
 

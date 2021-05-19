@@ -1,20 +1,26 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "set.h"
 
-int main()
+Set SETA, SETB, SETC, SETD, SETE, SETF;
+
+int run_line();
+
+void init()
 {
-    char *line;
-    size_t len;
-    char *pch;
-    getline(&line, &len, stdin);
-    pch = strtok(line, " \t");
-    while (pch != NULL)
+    SETA = init_set();
+    SETB = init_set();
+    SETC = init_set();
+    SETD = init_set();
+    SETE = init_set();
+    SETF = init_set();
+}
+
+int main(int argc, char const *argv[])
+{
+    init();
+    int run = 1;
+    while (run)
     {
-        printf("s=%s\n", pch);
-        pch = strtok(NULL, " \t");
+        run = run_line();
     }
-    free(line);
     return 0;
 }
