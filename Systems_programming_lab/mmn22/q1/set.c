@@ -9,7 +9,7 @@ void add_to_set(Set set, unsigned short int num)
     set->arr[group] |= (1 << bit_index);
 }
 
-Set union_set(Set setA, Set setB)
+Set apply_set_func(Set setA, Set setB, int type)
 {
     Set new_set = init_set();
     int i;
@@ -18,59 +18,30 @@ Set union_set(Set setA, Set setB)
         int group;
         for (group = 0; group < SET_SIZE / SIZE; group++)
         {
-            new_set->arr[i] = setA->arr[i] | setB->arr[i];
-        }
-    }
-    return new_set;
-    
-}
+            switch (type)
+            {
+            case UNION_SET:
+                new_set->arr[i] = setA->arr[i] | setB->arr[i];
+                break;
+            
+            case INTERSECT_SET:
+                new_set->arr[i] = setA->arr[i] & setB->arr[i];
+                break;
 
-Set intersect_set(Set setA, Set setB)
-{
-    Set new_set = init_set();
-    int i;
-    for (i = 0; i < SET_SIZE / SIZE; i++)
-    {
-        int group;
-        for (group = 0; group < SET_SIZE / SIZE; group++)
-        {
-            new_set->arr[i] = setA->arr[i] & setB->arr[i];
-        }
-    }
-    return new_set;
-    
-}
+            case SUB_SET:
+                new_set->arr[i] = setA->arr[i] & ~(setB->arr[i]);
+                break;
 
-Set sub_set(Set setA, Set setB)
-{
-    Set new_set = init_set();
-    int i;
-    for (i = 0; i < SET_SIZE / SIZE; i++)
-    {
-        int group;
-        for (group = 0; group < SET_SIZE / SIZE; group++)
-        {
-            new_set->arr[i] = setA->arr[i] & ~(setB->arr[i]);
+            case SYMDIFF_SET:
+                new_set->arr[i] = setA->arr[i] ^ setB->arr[i];
+                break;
+            
+            default:
+                break;
+            }
         }
     }
     return new_set;
-    
-}
-
-Set symdiff_set(Set setA, Set setB)
-{
-    Set new_set = init_set();
-    int i;
-    for (i = 0; i < SET_SIZE / SIZE; i++)
-    {
-        int group;
-        for (group = 0; group < SET_SIZE / SIZE; group++)
-        {
-            new_set->arr[i] = setA->arr[i] ^ setB->arr[i];
-        }
-    }
-    return new_set;
-    
 }
 
 void print_group(int group, unsigned short int content)
