@@ -3,10 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include "set.h"
 #include "input.h"
 
-Set SETA, SETB, SETC, SETD, SETE, SETF;
+extern Set SETA, SETB, SETC, SETD, SETE, SETF;
 
 Set which_set(char *set)
 {
@@ -85,34 +84,39 @@ int read_set(char *ptr, Set *set)
         token++;
     while (*token)
     {
-        int num = read_num(&token);
-        if (num < SET_SIZE && num >=0)
+        unsigned short int num = read_num(&token);
+        if (num == -1)
+        {
+            if (strtok(ptr, "\n") != NULL)
+            {
+                return -1;
+            }
+            return 0;
+        }
+
+        if (num < SET_SIZE && num >= 0)
         {
             add_to_set(set, num);
         }
         else
         {
-            return -1;
+            return -2;
         }
     }
-    return 0;
+    return -3;
 }
 
-int main()
+int run_line()
 {
-    SETA = init_set();
-    /* add_to_set(SETA, 0);
-    add_to_set(SETA, 4);
-    add_to_set(SETA, 32);
-    add_to_set(SETA, 56); */
-    char *line = NULL;
     char *ptr = NULL;
+    char *token = NULL;
+    char *line = NULL;
     size_t len = 0;
-    ssize_t nread;
-    char *token;
-    Set tmp;
+    Set setA = NULL;
+    Set setB = NULL;
+    Set setC = NULL;
 
-    nread = getline(&line, &len, stdin);
+    getline(&line, &len, stdin);
     ptr = strdup(line);
     token = strsep(&ptr, " \t\n");
 
@@ -122,35 +126,43 @@ int main()
     case READ_SET:
         token = strsep(&ptr, ",");
         remove_spaces(token);
-        tmp = which_set(token);
-        read_set(ptr, &tmp);
+        setA = which_set(token);
+        read_set(ptr, &setA);
         break;
 
     case PRINT_SET:
         token = strsep(&ptr, "\n");
-        tmp = which_set(token);
-        print_set(tmp);
+        setA = which_set(token);
+        print_set(&setA);
         break;
 
     case UNION_SET:
-        break;
-
     case INTERSECT_SET:
-        break;
-
     case SUB_SET:
-        break;
-
     case SYMDIFF_SET:
+        token = strsep(&ptr, ",");
+        remove_spaces(token);
+        setA = which_set(token);
+        token = strsep(&ptr, ",");
+        remove_spaces(token);
+        setB = which_set(token);
+        token = strsep(&ptr, "\n");
+        remove_spaces(token);
+        setC = which_set(token);
+        apply_set_func(&setA, &setB, &setC, func);
         break;
 
     case STOP:
-        break;
+        if (strtok(ptr, "\n") != NULL)
+        {
+            return -1;
+        }
+        return 0;
 
     default:
         break;
     }
 
     free(line);
-    exit(EXIT_SUCCESS);
+    return 1;
 }
