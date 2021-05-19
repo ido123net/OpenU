@@ -4,10 +4,10 @@
 
 enum
 {
-    UNION_SET,
-    INTERSECT_SET,
-    SUB_SET,
-    SYMDIFF_SET
+    UNION,
+    INTERSECT,
+    SUB,
+    SYMDIFF
 };
 
 typedef struct arr *Set;
@@ -17,7 +17,7 @@ typedef struct arr
     unsigned short int arr[SET_SIZE / SIZE];
 }arr;
 
-void add_to_set(Set set, unsigned short int num);
+void add_to_set(Set *set, unsigned short int num);
 
 void print_set(Set set);
 

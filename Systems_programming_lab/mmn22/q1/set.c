@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include "set.h"
 
-void add_to_set(Set set, unsigned short int num)
+void add_to_set(Set *set, unsigned short int num)
 {
     int group = num / SIZE;     /* the group of the num */
     int bit_index = num % SIZE; /* bit to change to one */
-    set->arr[group] |= (1 << bit_index);
+    (*set)->arr[group] |= (1 << bit_index);
 }
 
 Set apply_set_func(Set setA, Set setB, int type)
@@ -20,19 +20,19 @@ Set apply_set_func(Set setA, Set setB, int type)
         {
             switch (type)
             {
-            case UNION_SET:
+            case UNION:
                 new_set->arr[i] = setA->arr[i] | setB->arr[i];
                 break;
             
-            case INTERSECT_SET:
+            case INTERSECT:
                 new_set->arr[i] = setA->arr[i] & setB->arr[i];
                 break;
 
-            case SUB_SET:
+            case SUB:
                 new_set->arr[i] = setA->arr[i] & ~(setB->arr[i]);
                 break;
 
-            case SYMDIFF_SET:
+            case SYMDIFF:
                 new_set->arr[i] = setA->arr[i] ^ setB->arr[i];
                 break;
             

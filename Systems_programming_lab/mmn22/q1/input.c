@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,21 +8,21 @@
 
 Set SETA, SETB, SETC, SETD, SETE, SETF;
 
-Set *which_set(char *set)
+Set which_set(char *set)
 {
     /* returning a pointer to the complex number with the same name as the char */
     if (!strcmp(set, "SETA"))
-        return &SETA;
+        return SETA;
     if (!strcmp(set, "SETB"))
-        return &SETB;
+        return SETB;
     if (!strcmp(set, "SETC"))
-        return &SETC;
+        return SETC;
     if (!strcmp(set, "SETD"))
-        return &SETD;
+        return SETD;
     if (!strcmp(set, "SETE"))
-        return &SETE;
+        return SETE;
     if (!strcmp(set, "SETF"))
-        return &SETF;
+        return SETF;
 
     return NULL; /* never reaches hear */
 }
@@ -38,18 +39,8 @@ void remove_spaces(char *s)
     } while ((*s++ = *d++));
 }
 
-int get_func(const char *delims)
+int get_func(char *token)
 {
-    while (isspace(ptr[0]))
-        ptr++;
-
-    char *token;
-    if ((token = strsep(&ptr, delims)) == NULL)
-    {
-        // TODO get new line
-        return -1;
-    }
-
     int i;
     for (i = 0; i < NUM_FUNC; i++)
     {
@@ -60,47 +51,106 @@ int get_func(const char *delims)
     return -1;
 }
 
-Set *get_set(const char *delims)
+int read_num(char **token)
 {
-    char *token = strsep(&ptr, delims);
-    remove_spaces(token);
-    if ((token == NULL))
+    int i;
+    int sign = 1;
+    int size = 3;
+    char num[size];
+    while (isspace(**token))
+        (*token)++;
+    if (**token == '-')
     {
-        // TODO get new line
-        return NULL;
+        sign = -1;
+        (*token)++;
     }
-    return which_set(token);
+    for (i = 0; isdigit(**token) && i < size; (*token)++)
+    {
+        num[i++] = **token;
+    }
+    while (**token != ',')
+    {
+        if (!isspace(**token))
+            return -1;
+        (*token)++;
+    }
+    (*token)++;
+    return sign * atoi(num);
+}
+
+int read_set(char *ptr, Set *set)
+{
+    char *token = strsep(&ptr, "\n");
+    while (isspace(*token))
+        token++;
+    while (*token)
+    {
+        int num = read_num(&token);
+        if (num < SET_SIZE && num >=0)
+        {
+            add_to_set(set, num);
+        }
+        else
+        {
+            return -1;
+        }
+    }
+    return 0;
 }
 
 int main()
 {
+    SETA = init_set();
+    /* add_to_set(SETA, 0);
+    add_to_set(SETA, 4);
+    add_to_set(SETA, 32);
+    add_to_set(SETA, 56); */
     char *line = NULL;
+    char *ptr = NULL;
     size_t len = 0;
     ssize_t nread;
+    char *token;
+    Set tmp;
 
-    while ((nread = getline(&line, &len, stdin)) != -1)
+    nread = getline(&line, &len, stdin);
+    ptr = strdup(line);
+    token = strsep(&ptr, " \t\n");
+
+    int func = get_func(token);
+    switch (func)
     {
-        ptr = strdup(line);
-        char *ptr;
+    case READ_SET:
+        token = strsep(&ptr, ",");
+        remove_spaces(token);
+        tmp = which_set(token);
+        read_set(ptr, &tmp);
+        break;
 
-        if (ptr == NULL)
-        {
-            fprintf(stderr, "strdup failed");
-            exit(EXIT_FAILURE);
-        }
-        int func;
-        if ((func = get_func(" \t")) >= 0)
-        {
-            printf("%s\n", func_names[func]);
-        }
-        Set *tmp;
-        if ((tmp = get_set("\n")))
-        {
+    case PRINT_SET:
+        token = strsep(&ptr, "\n");
+        tmp = which_set(token);
+        print_set(tmp);
+        break;
 
-        }
+    case UNION_SET:
+        break;
 
+    case INTERSECT_SET:
+        break;
+
+    case SUB_SET:
+        break;
+
+    case SYMDIFF_SET:
+        break;
+
+    case STOP:
+        break;
+
+    default:
+        break;
     }
-    free(ptr);
+
     free(line);
     exit(EXIT_SUCCESS);
 }
