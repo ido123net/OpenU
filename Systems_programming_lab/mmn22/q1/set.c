@@ -44,66 +44,6 @@ Set apply_set_func(Set setA, Set setB, int type)
     return new_set;
 }
 
-Set union_set(Set setA, Set setB)
-{
-    Set new_set = init_set();
-    int i;
-    for (i = 0; i < SET_SIZE / SIZE; i++)
-    {
-        int group;
-        for (group = 0; group < SET_SIZE / SIZE; group++)
-        {
-            new_set->arr[i] = setA->arr[i] | setB->arr[i];
-        }
-    }
-    return new_set;
-}
-
-Set intersect_set(Set setA, Set setB)
-{
-    Set new_set = init_set();
-    int i;
-    for (i = 0; i < SET_SIZE / SIZE; i++)
-    {
-        int group;
-        for (group = 0; group < SET_SIZE / SIZE; group++)
-        {
-            new_set->arr[i] = setA->arr[i] & setB->arr[i];
-        }
-    }
-    return new_set;
-}
-
-Set sub_set(Set setA, Set setB)
-{
-    Set new_set = init_set();
-    int i;
-    for (i = 0; i < SET_SIZE / SIZE; i++)
-    {
-        int group;
-        for (group = 0; group < SET_SIZE / SIZE; group++)
-        {
-            new_set->arr[i] = setA->arr[i] & ~(setB->arr[i]);
-        }
-    }
-    return new_set;
-}
-
-Set symdiff_set(Set setA, Set setB)
-{
-    Set new_set = init_set();
-    int i;
-    for (i = 0; i < SET_SIZE / SIZE; i++)
-    {
-        int group;
-        for (group = 0; group < SET_SIZE / SIZE; group++)
-        {
-            new_set->arr[i] = setA->arr[i] ^ setB->arr[i];
-        }
-    }
-    return new_set;
-}
-
 void print_group(int group, unsigned short int content)
 {
     int j;
