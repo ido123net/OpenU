@@ -1,8 +1,11 @@
+/**
+ * AUTHOR: Ido Frenkel.
+ * ID: 205419559.
+ * PROGRAM: The software performs basic operations on sets in the range 0-127.
+ */
 #include "input.h"
 
 Set SETA, SETB, SETC, SETD, SETE, SETF;
-
-int run_line();
 
 void init()
 {
@@ -16,6 +19,7 @@ void init()
 
 int main(int argc, char const *argv[])
 {
+    welcome();
     init();
     int run;
     do
