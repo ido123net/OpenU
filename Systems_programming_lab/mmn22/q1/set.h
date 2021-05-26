@@ -22,7 +22,9 @@ typedef struct arr
 
 void add_to_set(Set *set, unsigned short int num);
 
-void print_set(Set *set);
+void read_set(Set *setA, Set setB);
+
+int print_set(Set *set);
 
 void apply_set_func(Set *setA, Set *setB, Set *setC, int type);
 

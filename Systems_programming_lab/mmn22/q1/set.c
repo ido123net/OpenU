@@ -9,6 +9,13 @@ void add_to_set(Set *set, unsigned short int num)
     (*set)->arr[group] |= (1 << bit_index);
 }
 
+void read_set(Set *setA, Set setB)
+{
+    int i;
+    for (i = 0; i < SET_SIZE / SIZE; i++)
+        (*setA)->arr[i] = setB->arr[i];
+}
+
 void apply_set_func(Set *setA, Set *setB, Set *setC, int type)
 {
     int i;
@@ -42,14 +49,16 @@ void apply_set_func(Set *setA, Set *setB, Set *setC, int type)
     }
 }
 
-void print_group(int group, unsigned short int content)
+int print_group(int group, unsigned short int content)
 {
+    int bits_on = 0;
     int j;
     for (j = 0; j < SIZE; j++)
     {
         unsigned short int k = (1 << j);
         if (content & k)
         {
+            bits_on++;
             printf("%ld\t", (group * SIZE) + j);
         }
     }
@@ -57,15 +66,20 @@ void print_group(int group, unsigned short int content)
     {
         putchar('\n');
     }
+    return bits_on;
 }
 
-void print_set(Set *set)
+int print_set(Set *set)
 {
+    int bits_on = 0;
     int group;
     for (group = 0; group < SET_SIZE / SIZE; group++)
     {
-        print_group(group, (*set)->arr[group]);
+        bits_on += print_group(group, (*set)->arr[group]);
     }
+    if (!bits_on)
+        printf("The set is empty\n");
+    return bits_on;
 }
 
 Set init_set()

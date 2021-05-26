@@ -1,4 +1,4 @@
-#include "set.h"
+#include "input.h"
 
 Set SETA, SETB, SETC, SETD, SETE, SETF;
 
@@ -17,10 +17,10 @@ void init()
 int main(int argc, char const *argv[])
 {
     init();
-    int run = 1;
-    while (run)
+    int run;
+    do
     {
         run = run_line();
-    }
+    } while (run != STOP);
     return 0;
 }
