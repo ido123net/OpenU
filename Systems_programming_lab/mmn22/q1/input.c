@@ -69,13 +69,25 @@ which_set(char *set)
  * returning a pointer to the set with the same name NULL if there is no such set.
  * prints errors.
  */
-Set *get_set(char **set)
+Set *get_set(char **set, int c)
 {
     while (isspace(**set)) /* skip spaces in start of string */
         (*set)++;
     if (!**set) /* if we reach the end of string then there is a missing parameter */
     {
-        printf("Missing parameter\n");
+        switch (c)
+        {
+        case ',':
+            printf("Multiple consecutive commas\n");
+            break;
+
+        case EOF:
+            printf("Missing parameter\n");
+            break;
+
+        default:
+            break;
+        }
         return NULL;
     }
     int i;
@@ -108,10 +120,9 @@ int get_func(char **token)
                 return i;
             else
                 printf("Illegal char - %c after command\n", **token);
-            return -1;
+            return -2;
         }
     }
-    printf("Undefined command name\n"); /* command not found */
     return -1;
 }
 
@@ -142,21 +153,22 @@ int get_num(char **ptr)
 /* read the line after the read_set command */
 int read(char **token)
 {
-    char *set = strsep(token, ",");
-    if (!*token)
+    char *tmp = strsep(token, "\n\0");
+    char *set = strsep(&tmp, ",");
+    Set *setA = get_set(&set, ','); /* get the set to read to */
+    if (!tmp)
     {
         printf("Missing comma\n");
         return -1;
     }
-    Set *setA = get_set(&set); /* get the set to read to */
-    if (!setA)                 /* if the string not represent a valid set */
+    if (!setA) /* if the string not represent a valid set */
         return -1;
 
-    Set tmp_set = init_set();           /* generates temporary set to read the numbers to */
-    char *nums = strsep(token, "\n\0"); /* string with the numbers to read */
-    char *snum = strsep(&nums, ",");    /* first number */
+    Set tmp_set = init_set();        /* generates temporary set to read the numbers to */
+    char *nums = strsep(&tmp, "\0"); /* string with the numbers to read */
+    char *snum = strsep(&nums, ","); /* first number */
     int terminated = FALSE;
-    while (*snum && !terminated) /* if there is number to read and not terminated yet */
+    while (snum && !terminated) /* if there is number to read and not terminated yet */
     {
         int num;
         num = get_num(&snum); /* the number in the string */
@@ -203,8 +215,8 @@ int read(char **token)
 int print(char **token)
 {
     char *set = strsep(token, "\n\0");
-    Set *setA = get_set(&set); /* get the set to print */
-    if (!setA)                 /* if the string not represent a valid set */
+    Set *setA = get_set(&set, EOF); /* get the set to print */
+    if (!setA)                      /* if the string not represent a valid set */
         return -1;
     while (isspace(*set)) /* skip spaces in end of string */
         set++;
@@ -220,29 +232,30 @@ int print(char **token)
 /* read the line after the <func_set> command */
 int function(char **token, int func)
 {
-    char *set = strsep(token, ",\n\0");
-    if (!*token)
+    char *tmp = strsep(token, "\n\0");
+    char *set = strsep(&tmp, ",");
+    Set *setA = get_set(&set, ','); /* get the 1st set */
+    if (!setA)                      /* if the string not represent a valid set */
+        return -1;
+    if (!tmp)
     {
-        printf("Missing comma\n");
+        printf("Missing parameter\n");
         return -1;
     }
-    Set *setA = get_set(&set); /* get the 1st set */
-    if (!setA)                 /* if the string not represent a valid set */
-        return -1;
 
-    set = strsep(token, ",\n\0");
-    if (!*token)
+    set = strsep(&tmp, ",");
+    Set *setB = get_set(&set, ','); /* get the 2nd set */
+    if (!setB)                      /* if the string not represent a valid set */
+        return -1;
+    if (!tmp)
     {
-        printf("Missing comma\n");
+        printf("Missing parameter\n");
         return -1;
     }
-    Set *setB = get_set(&set); /* get the 2nd set */
-    if (!setB)                 /* if the string not represent a valid set */
-        return -1;
 
-    set = strsep(token, "\n\0");
-    Set *setC = get_set(&set); /* get the 3rd set */
-    if (!setC)                 /* if the string not represent a valid set */
+    set = strsep(&tmp, "\0");
+    Set *setC = get_set(&set, EOF); /* get the 3rd set */
+    if (!setC)                      /* if the string not represent a valid set */
         return -1;
 
     while (isspace(*set)) /* skip spaces in end of string */
@@ -264,8 +277,6 @@ int run_line()
     size_t len = 0;
 
     getline(&line, &len, stdin); /* gets the input line with '\n' char at the end */
-    if (!strchr(line, '\n'))     /* if there is no '\n' char we put it for aesthetic reasons */
-        putchar('\n');
     printf("==> %s", line);
     if (!strchr(line, '\n')) /* if there is no '\n' char we put it for aesthetic reasons */
         putchar('\n');
@@ -277,10 +288,19 @@ int run_line()
         printf("blank line\n");
         return -1;
     }
-    token = strsep(&ptr, " \t\n\0"); /* the command text */
-    int func = get_func(&token);   /* int of command */
-    if (func == -1)                /* not a valid command */
+    char *function_str = strsep(&ptr, " \t\0"); /* the command text */
+    int func = get_func(&function_str);   /* int of command */
+    if (func < 0)                /* not a valid command */
     {
+        if (func == -2)
+            return -1;
+        if (!ptr) /* if ptr is NULL then we reaced the EOF */
+        {
+            printf("reached end of file symbol\n");
+            exit(EXIT_FAILURE);
+        }
+
+        printf("Undefined command name\n");
         return -1;
     }
 
@@ -288,7 +308,7 @@ int run_line()
     {
     case READ_SET:
         token = strsep(&ptr, "\0"); /* text after command */
-        if (!*token)
+        if (!token)
         {
             printf("Missing parameter\n");
             return -1;
@@ -298,7 +318,7 @@ int run_line()
 
     case PRINT_SET:
         token = strsep(&ptr, "\0"); /* text after command */
-        if (!*token)
+        if (!token)
         {
             printf("Missing parameter\n");
             return -1;
@@ -321,12 +341,14 @@ int run_line()
 
     case STOP:
         if (ptr)
+        {
             while (isspace(*ptr))
                 ptr++;
-        if (*ptr) /* invalid text after command */
-        {
-            printf("Extraneous text after end of command\n");
-            return -1;
+            if (*ptr) /* invalid text after command */
+            {
+                printf("Extraneous text after end of command\n");
+                return -1;
+            }
         }
         return STOP;
 
@@ -338,7 +360,7 @@ int run_line()
     if (!token) /* token need to be empty string here if not then we reaced the EOF */
     {
         printf("reached end of file symbol\n");
-        return STOP;
+        exit(EXIT_FAILURE);
     }
 
     return 1;
