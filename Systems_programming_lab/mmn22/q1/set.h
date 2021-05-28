@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 #define SET_SIZE 128
 #define BIT_SIZE 8
 #define SIZE (BIT_SIZE * sizeof(unsigned short int))

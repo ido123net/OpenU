@@ -7,6 +7,7 @@
 
 Set SETA, SETB, SETC, SETD, SETE, SETF;
 
+/* initializing sets */
 void init()
 {
     SETA = init_set();
@@ -19,12 +20,12 @@ void init()
 
 int main(int argc, char const *argv[])
 {
-    welcome();
-    init();
     int run;
+    welcome(); /* prints welcome message */
+    init();
     do
     {
-        run = run_line();
-    } while (run != STOP);
+        run = run_line(); /* read one line from user */
+    } while (run != STOP); /* continue until stop occurs */
     return 0;
 }
